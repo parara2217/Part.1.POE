@@ -4,17 +4,17 @@ using System.Configuration;
 using System.IO;
 using System.Drawing;
 using System.Drawing.Text;
+using System.Text.RegularExpressions;
 
 namespace New
 {
     public class interaction
     {
-        string questions;
-        //THIS IS THIRD
-
         //Variables Declared
+        string questions;
         private string name = string.Empty;
         private string question = string.Empty;
+        string ChatBot;
         //This is to store the replies and what to ignore
         ArrayList replies = new ArrayList();
         ArrayList ignore = new ArrayList();
@@ -24,16 +24,18 @@ namespace New
             // Welcoming the user 
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("*********************************************");
-            Console.WriteLine("Hello! Welcome to the Cybersecurity Awareness Bot. I'm here to help you stay safe online.");
+            Console.WriteLine($"ChatBot ->\" Hello! Welcome to the Cybersecurity Awareness Bot. I'm here to help you stay safe online.");
             Console.WriteLine("*********************************************");
-            Console.ResetColor();  // Reset the color after the welcome message
+
 
             try
             {
                 // Capture and validate user's name (will keep asking until valid)
+                Console.ForegroundColor = ConsoleColor.Red;
                 CaptureAndValidateUsername();
-
-                Console.WriteLine($"Hi {name}! It's great to meet you.");
+                Console.WriteLine($"ChatBoy -> \"Hi {name}! It's great to meet you.\"");
+                //  Console.WriteLine($"Hi {name}! It's great to meet you.");
+                Console.ForegroundColor = ConsoleColor.Cyan;
 
                 // Capture and validate the question (will keep asking until valid)
                 CaptureAndValidateQuestion();
@@ -49,14 +51,14 @@ namespace New
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(ex.Message);
-                Console.ResetColor();
+
             }
             catch (Exception)
             {
                 // Catch any unexpected errors
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Oops, something went wrong. Please try again.");
-                Console.ResetColor();
+                Console.WriteLine($"ChatBot ->\"Oops, something went wrong. Please try again.");
+
             }
         }
 
@@ -72,13 +74,13 @@ namespace New
                 {
                     Console.ReadKey(true); // Capture and ignore the key press to prevent it from displaying
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("\nYou have pressed a key to exit the interaction.");
+                    Console.WriteLine($"ChatBot ->\"You have pressed a key to exit the interaction.");
                     Console.ResetColor();
                     continueInteraction = false; // Stop the interaction if any key is pressed
                 }
 
                 // Simulate a prompt for the next part of the interaction
-                Console.WriteLine("\nAsk me a question related to cybersecurity, or press any key to stop the conversation.");
+                Console.WriteLine($"ChatBot ->\"Ask me a question related to cybersecurity, or press any key to stop the conversation.");
 
                 // Capture and validate the question again (can keep prompting)
                 CaptureAndValidateQuestion();
@@ -116,60 +118,82 @@ namespace New
                 if (found)
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("Here are the details I found for you:\n");
+                    Console.WriteLine($"ChatBot ->\"Here are the details I found for you:\n");
                     Console.WriteLine(message);
                     Console.ResetColor();
                 }
                 else
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("I couldn't find anything directly related to your question. Could you try asking about specific cybersecurity topics?");
+                    Console.WriteLine($"ChatBot ->\"I couldn't find anything directly related to your question. Could you try asking about specific cybersecurity topics?");
                     Console.ResetColor();
                 }
 
                 // A brief pause before next loop iteration, making the bot wait a bit before continuing.
-                System.Threading.Thread.Sleep(1000); // Adjust the delay as needed
+                System.Threading.Thread.Sleep(1000); // It is to pause every millisecond
             }
         }
 
         // Method to capture and validate the username
         private void CaptureAndValidateUsername()
         {
-            while (true)
+            do
             {
-                Console.WriteLine("First things first, can I have your name?");
+                Console.WriteLine($"ChatBot ->\"What is your name? (Type 'Exit' to exit the program)");
                 name = Console.ReadLine(); // Get the user's input
 
-                if (string.IsNullOrWhiteSpace(name))
+                if (string.IsNullOrWhiteSpace(name) || name.ToLower() == "exit")
                 {
-                    throw new ArgumentException("Oops! It seems you skipped your name. Please enter a valid name.");
+                    if (name.ToLower() == "exit")
+                    {
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.WriteLine($"ChatBot ->\"Goodbye! Stay safe online!");
+                        Environment.Exit(0);  // Exit the program if the user types "Exit"
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"ChatBot ->\"Oops! It seems you skipped your name. Please enter a valid name.");
+                    }
                 }
 
-                break; // Exit the loop if the name is valid
-            }
+            } while (string.IsNullOrWhiteSpace(name)); // Keep asking until a valid name is entered
         }
+
+        // Method to capture and validate the question
 
         // Method to capture and validate the question
         private void CaptureAndValidateQuestion()
         {
             while (true)
             {
-                Console.WriteLine("How can I assist you with cybersecurity today?");
+                Console.WriteLine($"ChatBot ->\" How can I assist you with cybersecurity today?");
                 question = Console.ReadLine(); // Get the user's input
 
-                if (string.IsNullOrWhiteSpace(question))
+                if (string.IsNullOrWhiteSpace(question) || question.ToLower() == "exit")
                 {
-                    throw new ArgumentException("It seems you didn't ask anything. Please enter a question related to cybersecurity.");
+                    if (question.ToLower() == "exit")
+                    {
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.WriteLine($"ChatBot ->\"Goodbye! Stay safe online!");
+                        Environment.Exit(0);  // Exit the program if the user types "Exit"
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"ChatBot ->\"It seems you didn't ask anything. Please enter a question related to cybersecurity.");
+                    }
                 }
-
-                // Check if the question is cybersecurity-related
-                if (!IsCybersecurityRelated(question))
+                else if (!IsCybersecurityRelated(question))
                 {
-                    throw new ArgumentException("It seems your question isn't related to cybersecurity. Please ask about cybersecurity topics.");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"ChatBot ->\"It seems your question isn't related to cybersecurity. Please ask about cybersecurity topics.");
                 }
-
-                questions = question; // Assign the valid question to the 'questions' variable
-                break; // Exit the loop if the question is valid
+                else
+                {
+                    questions = question; // Assign the valid question to the 'questions' variable
+                    break; // Exit the loop if the question is valid
+                }
             }
         }
 
@@ -177,12 +201,11 @@ namespace New
         private bool IsCybersecurityRelated(string question)
         {
             string[] keywords = {"password","Passwords","passwords","PASSWORD","PASSWORDS" ,
-                "phishing", "Phishing","PHISHING", 
-                "cybersecurity","CYBERSECURITY", "Cybersecurity","CyberSecurity", 
+                "phishing", "Phishing","PHISHING",
+                "cybersecurity","CYBERSECURITY", "Cybersecurity","CyberSecurity",
                 "hack", "hacks", "hacking", "Hack", "Hacks", "Hacking",
-                "virus", "viruses", "Virus", "VIRUS", "VIRUSES", 
-                "data breach",
-                "encryption" };
+                "virus", "viruses", "Virus", "VIRUS", "VIRUSES",
+                "encryption","encryptions", "ENCRYPTION","ENCRYPTIONS"};
 
             foreach (var keyword in keywords)
             {
@@ -194,16 +217,17 @@ namespace New
 
             return false; // Return false if no keyword is found
         }
-
+      
 
         // Method for storing replies
         private void KeepReplies()
         {
-            replies.Add("A strong password should be at least 8 characters long, including a number, an uppercase letter, a lowercase letter, and a special character.");
-            replies.Add("SQL injection is a serious security vulnerability that allows an attacker to interfere with the queries an application makes to its database.");
-            replies.Add("Phishing attacks often target mobile devices, so it’s important to be cautious about suspicious links in text messages or emails.");
-            replies.Add("Cybersecurity is all about protecting systems, networks, and data from cyber threats, ensuring privacy and integrity of information.");
-            replies.Add("Encryption is a method of converting information or data into a secure format that prevents unauthorized access.");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            replies.Add("*A strong password should be at least 8 characters long, including a number, an uppercase letter, a lowercase letter, and a special character.");
+            replies.Add("*SQL injection is a serious security vulnerability that allows an attacker to interfere with the queries an application makes to its database.");
+            replies.Add("*Cybersecurity is all about protecting systems, networks, and data from cyber threats, ensuring privacy and integrity of information.");
+            replies.Add("*Encryption is a method of converting information or data into a secure format that prevents unauthorized access.");
+            replies.Add("*Phishing is the act of sending phony emails that look like they are from reliable sources. This type of hack is the most prevalent and aims to steal sensitive information, including login credentials and credit card details. Using technology that filters phishing emails or educating yourself can help you protect yourself." + "*Phishing attacks often target mobile devices, so it’s important to be cautious about suspicious links in text messages or emails.");
         }
 
         // Method for storing ignored words

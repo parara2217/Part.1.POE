@@ -12,9 +12,9 @@ namespace New
         static void Main(string[] args)
         {
             new voiceandimage() { };
-           // new color() { };
+          
             new interaction() { };
-           // new inputvalidation(){  };
+          
         }
     }
 }
