@@ -8,5 +8,5 @@
 5. The ChatBot will then ask how it can help regarding Cybersecurity related questions, the user will decide to ask or not
    -if a question is asked about anything related to cybersecurity, an answer will be displayed related to the question
    -this time if the user decided not to ask a question related to cybersecurity the program will display that a question was not asked and the program will end.
-6. And finally if the user decided to end the program, he/she can press the enter button twice to end it
+6. And finally if the user decided to end the program they can simple type in the word Exit
    
