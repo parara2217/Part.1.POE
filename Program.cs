@@ -12,7 +12,6 @@ namespace New
         static void Main(string[] args)
         {
             new voiceandimage() { };
-          
             new interaction() { };
           
         }
