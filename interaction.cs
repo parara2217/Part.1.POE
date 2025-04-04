@@ -142,7 +142,7 @@ namespace New
                 Console.WriteLine($"ChatBot ->\"What is your name? (Type 'Exit' to exit the program)");
                 name = Console.ReadLine(); // Get the user's input
 
-                if (string.IsNullOrWhiteSpace(name) || name.ToLower() == "exit")
+                if (string.IsNullOrWhiteSpace(name) || name.ToLower() == "bye")
                 {
                     if (name.ToLower() == "exit")
                     {
